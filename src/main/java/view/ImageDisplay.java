@@ -2,6 +2,9 @@ package view;
 
 import model.Image;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 public interface ImageDisplay {
-    void show(Image image);
+    void show(Image image, Dimension size);
 }

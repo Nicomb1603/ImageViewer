@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,10 +16,9 @@ import java.nio.file.Path;
 public class SwingImageDisplay extends JPanel implements ImageDisplay {
 
     @Override
-    public void show(Image image) {
+    public void show(Image image, Dimension size) {
         try {
-            byte[] imageBytes = Files.readAllBytes(Path.of(image.name()));
-            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+            BufferedImage bufferedImage = resize(image, size);
             ImageIcon icon = new ImageIcon(bufferedImage);
             JLabel label = new JLabel(icon);
 
@@ -30,5 +30,14 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private BufferedImage resize(Image image, Dimension size) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(new File(image.name()));
+        BufferedImage resizedBufferedImage = new BufferedImage(size.width, size.height, bufferedImage.getType());
+        Graphics2D g2d = resizedBufferedImage.createGraphics();
+        g2d.drawImage(bufferedImage, 0, 0, size.width, size.height, null);
+        g2d.dispose();
+        return resizedBufferedImage;
     }
 }
