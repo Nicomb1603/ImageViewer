@@ -9,7 +9,6 @@ public class NextImageCommand implements Command{
 
     @Override
     public void execute() {
-        System.out.println("Next Pressed");
         imageDisplay.show(imageDisplay.image().next());
     }
 }

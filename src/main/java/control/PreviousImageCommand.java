@@ -9,7 +9,6 @@ public class PreviousImageCommand implements Command{
 
     @Override
     public void execute() {
-        System.out.println("Previous Pressed");
         imageDisplay.show(imageDisplay.image().prev());
     }
 }
