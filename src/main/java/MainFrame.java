@@ -18,17 +18,24 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         this.commands = new HashMap<>();
-        this.setTitle("Image Viewer");
         setScreenSize();
-        imageDisplay = new SwingImageDisplay(screenSize);
+        imageDisplay = createImageDisplay();
+        createButtons();
+
+        this.setTitle("Image Viewer");
         this.setSize(screenSize);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+
+
         this.add(imageDisplay);
-        createButtons();
         this.add(previousButton, BorderLayout.WEST);
         this.add(nextButton, BorderLayout.EAST);
+    }
+
+    private SwingImageDisplay createImageDisplay() {
+        return new SwingImageDisplay(screenSize);
     }
 
     private void createButtons(){
