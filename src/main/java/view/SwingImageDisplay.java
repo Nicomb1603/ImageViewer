@@ -15,10 +15,16 @@ import java.nio.file.Path;
 
 public class SwingImageDisplay extends JPanel implements ImageDisplay {
 
+    Image image;
+    Dimension size;
+
+    public SwingImageDisplay(Dimension dimension){this.size = dimension;}
+
     @Override
-    public void show(Image image, Dimension size) {
+    public void show(Image image) {
         try {
-            BufferedImage bufferedImage = resize(image, size);
+            this.image = image;
+            BufferedImage bufferedImage = resize(image);
             ImageIcon icon = new ImageIcon(bufferedImage);
             JLabel label = new JLabel(icon);
 
@@ -32,7 +38,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         }
     }
 
-    private BufferedImage resize(Image image, Dimension size) throws IOException {
+    private BufferedImage resize(Image image) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(new File(image.name()));
         BufferedImage resizedBufferedImage = new BufferedImage(size.width, size.height, bufferedImage.getType());
         Graphics2D g2d = resizedBufferedImage.createGraphics();
@@ -40,4 +46,8 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         g2d.dispose();
         return resizedBufferedImage;
     }
+
+    public Image image(){return this.image;}
+
+    public Dimension size() {return this.size;}
 }

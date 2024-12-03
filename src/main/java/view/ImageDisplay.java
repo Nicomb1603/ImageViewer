@@ -6,5 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public interface ImageDisplay {
-    void show(Image image, Dimension size);
+    void show(Image image);
+    Image image();
+    Dimension size();
 }
