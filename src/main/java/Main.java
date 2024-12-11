@@ -11,9 +11,9 @@ public class Main {
         MainFrame frame = new MainFrame();
         Image image = new FileImageLoader(new File(root)).load();
         frame.imageDisplay().show(image);
-        frame.add("<", new PreviousImageCommand(frame.imageDisplay()));
-        frame.add(">", new NextImageCommand(frame.imageDisplay()));
-        frame.setVisible(true);
+        frame.add("<", new PreviousImageCommand(frame.imageDisplay()))
+                .add(">", new NextImageCommand(frame.imageDisplay()))
+                .setVisible(true);
 
     }
 }

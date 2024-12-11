@@ -52,7 +52,10 @@ public class MainFrame extends JFrame {
 
     }
 
-    public void add(String name, Command command){this.commands.put(name, command);}
+    public MainFrame add(String name, Command command){
+        this.commands.put(name, command);
+        return this;
+    }
 
     public SwingImageDisplay imageDisplay() {return imageDisplay;}
 
