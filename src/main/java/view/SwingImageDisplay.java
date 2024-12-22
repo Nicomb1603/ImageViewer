@@ -12,35 +12,53 @@ import java.io.IOException;
 public class SwingImageDisplay extends JPanel implements ImageDisplay {
 
     Image image;
-    Dimension size;
+    BufferedImage resizedBufferedImage;
+    BufferedImage originalBufferedImage;
 
-    public SwingImageDisplay(Dimension dimension){this.size = dimension;}
+    public SwingImageDisplay(Dimension dimension){
+        this.setSize(dimension);
+    }
 
     @Override
     public void show(Image image) {
         try {
             this.image = image;
-            BufferedImage bufferedImage = resize(image);
-            ImageIcon icon = new ImageIcon(bufferedImage);
-            JLabel label = new JLabel(icon);
-
-            this.removeAll();
-            this.add(label, BorderLayout.CENTER);
-
-            this.revalidate();
+            this.originalBufferedImage = getBufferedImage(image().name());
+            this.resizedBufferedImage = resize();
             this.repaint();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
-    private BufferedImage resize(Image image) throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(new File(image.name()));
-        BufferedImage resizedBufferedImage = new BufferedImage(size.width, size.height, bufferedImage.getType());
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        try {
+            this.resizedBufferedImage = resize();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        g.drawImage(resizedBufferedImage, 0, 0, null);
+    }
+
+    private BufferedImage resize() throws IOException {
+        BufferedImage resizedBufferedImage = new BufferedImage(this.getWidth(), this.getWidth(), originalBufferedImage.getType());
         Graphics2D g2d = resizedBufferedImage.createGraphics();
-        g2d.drawImage(bufferedImage, 0, 0, size.width, size.height, null);
+        g2d.drawImage(originalBufferedImage, 0, 0, this.getWidth(), this.getHeight(), null);
         g2d.dispose();
         return resizedBufferedImage;
+    }
+
+    private BufferedImage getBufferedImage(String name) {
+        try {
+            return ImageIO.read(new File(name));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Image image(){return this.image;}
