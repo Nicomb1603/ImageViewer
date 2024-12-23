@@ -1,8 +1,7 @@
 package view;
 
-import model.Image;
 
-public interface ImageDisplay {
-    void show(Image image);
-    Image image();
+
+public interface ImageDisplay<T> {
+    void show(T image);
 }

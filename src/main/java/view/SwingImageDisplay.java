@@ -1,29 +1,24 @@
 package view;
 
-import model.Image;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-public class SwingImageDisplay extends JPanel implements ImageDisplay {
+public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedImage> {
 
-    Image image;
     BufferedImage resizedBufferedImage;
     BufferedImage originalBufferedImage;
+
 
     public SwingImageDisplay(Dimension dimension){
         this.setSize(dimension);
     }
 
     @Override
-    public void show(Image image) {
+    public void show(BufferedImage bufferedImage) {
         try {
-            this.image = image;
-            this.originalBufferedImage = getBufferedImage(image().name());
+            this.originalBufferedImage = bufferedImage;
             this.resizedBufferedImage = resize();
             this.repaint();
         } catch (IOException e) {
@@ -52,16 +47,6 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay {
         g2d.dispose();
         return resizedBufferedImage;
     }
-
-    private BufferedImage getBufferedImage(String name) {
-        try {
-            return ImageIO.read(new File(name));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Image image(){return this.image;}
 
 
 }

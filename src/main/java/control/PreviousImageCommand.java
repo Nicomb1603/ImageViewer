@@ -1,14 +1,15 @@
 package control;
 
-import view.ImageDisplay;
 
 public class PreviousImageCommand implements Command{
-    ImageDisplay imageDisplay;
+    Presenter presenter;
 
-    public PreviousImageCommand(ImageDisplay imageDisplay){this.imageDisplay = imageDisplay;}
+    public PreviousImageCommand(Presenter presenter) {
+        this.presenter = presenter;
+    }
 
     @Override
     public void execute() {
-        imageDisplay.show(imageDisplay.image().prev());
+        presenter.show(presenter.image().prev());
     }
 }

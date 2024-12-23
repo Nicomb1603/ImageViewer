@@ -10,9 +10,9 @@ public class Main {
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
         Image image = new FileImageLoader(new File(root)).load();
-        frame.imageDisplay().show(image);
-        frame.add("<", new PreviousImageCommand(frame.imageDisplay()))
-                .add(">", new NextImageCommand(frame.imageDisplay()))
+        frame.presenter().show(image);
+        frame.add("<", new PreviousImageCommand(frame.presenter()))
+                .add(">", new NextImageCommand(frame.presenter()))
                 .setVisible(true);
 
     }

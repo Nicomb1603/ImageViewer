@@ -1,4 +1,6 @@
 import control.Command;
+import control.ImagePresenter;
+import control.Presenter;
 import view.SwingImageDisplay;
 
 import javax.swing.*;
@@ -11,16 +13,14 @@ import java.util.Map;
 
 public class MainFrame extends JFrame {
     private Dimension screenSize;
-    private final SwingImageDisplay imageDisplay;
+    private Presenter presenter;
     private Map<String, Command> commands;
     private JButton nextButton;
     private JButton previousButton;
 
     public MainFrame() {
-        this.commands = new HashMap<>();
-        setScreenSize();
-        imageDisplay = createImageDisplay();
-        createButtons();
+
+        initialize();
 
         this.setTitle("Image Viewer");
         this.setSize(screenSize);
@@ -29,13 +29,20 @@ public class MainFrame extends JFrame {
         this.setLayout(new BorderLayout());
 
 
-        this.add(imageDisplay);
+        this.add((SwingImageDisplay) presenter.imageDisplay());
         this.add(previousButton, BorderLayout.WEST);
         this.add(nextButton, BorderLayout.EAST);
     }
 
-    private SwingImageDisplay createImageDisplay() {
-        return new SwingImageDisplay(screenSize);
+    private void initialize() {
+        this.commands = new HashMap<>();
+        setScreenSize();
+        this.presenter = createPresenter();
+        createButtons();
+    }
+
+    private ImagePresenter createPresenter() {
+        return new ImagePresenter(this.screenSize);
     }
 
     private void createButtons(){
@@ -57,9 +64,11 @@ public class MainFrame extends JFrame {
         return this;
     }
 
-    public SwingImageDisplay imageDisplay() {return imageDisplay;}
 
     private void setScreenSize(){screenSize = Toolkit.getDefaultToolkit().getScreenSize();}
 
 
+    public Presenter presenter() {
+        return presenter;
+    }
 }
