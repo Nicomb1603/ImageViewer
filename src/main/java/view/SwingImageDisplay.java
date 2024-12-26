@@ -12,11 +12,12 @@ import java.util.List;
 
 public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedImage> {
 
-    BufferedImage resizedBufferedImage;
-    BufferedImage originalBufferedImage;
+
     private int x = 0;
     private int previousX;
     private List<Order> orders;
+    private Offset onDragged = Offset::Null;
+    private Offset onReleased = Offset::Null;
 
 
     public SwingImageDisplay(){
@@ -31,13 +32,11 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
             @Override
             public void mousePressed(MouseEvent e) {
                 previousX = e.getX();
-                //System.out.println(e.getX());
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                x = 0;
-                repaint();
+                onReleased.handle(x);
             }
 
             @Override
@@ -57,6 +56,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
                 int currentX = e.getX();
                 int deltaX = currentX - previousX;
                 x += deltaX;
+                System.out.println(x);
                 previousX = currentX;
                 repaint();
             }
@@ -66,19 +66,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
             }
         });
     }
-/*
-    @Override
-    public void show(BufferedImage bufferedImage) {
-        try {
-            this.originalBufferedImage = bufferedImage;
-            this.resizedBufferedImage = resize();
-            this.repaint();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-    }
-*/
     public static class Order{
         BufferedImage image;
 
@@ -114,6 +102,32 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
             }
         }
 
+    }
+
+    @Override
+    public int width() {
+        return this.getWidth();
+    }
+
+    @Override
+    public int height() {
+        return this.getHeight();
+    }
+
+    @Override
+    public void clear() {
+        this.orders.clear();
+        repaint();
+    }
+
+    @Override
+    public void onReleased(Offset offset) {
+        this.onReleased = offset;
+    }
+
+    @Override
+    public void onDragged(Offset offset) {
+        this.onDragged = offset;
     }
 
     private BufferedImage resize(BufferedImage image) throws IOException {
