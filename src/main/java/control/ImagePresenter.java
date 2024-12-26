@@ -13,15 +13,17 @@ import java.io.IOException;
 public class ImagePresenter implements Presenter{
 
     private Image image;
-    private Image nextImage;
-    private Image prevImage;
+    private BufferedImage nextImage;
+    private BufferedImage prevImage;
     private ImageDisplay imageDisplay;
 
 
     @Override
     public void show(Image image) {
         this.image = image;
-        this.imageDisplay.paintImage(getBufferedImage(image.name()));
+        this.imageDisplay.paintImage(getBufferedImage(image.name()), 0);
+        this.prevImage = getBufferedImage(this.image.prev().name());
+        this.nextImage = getBufferedImage(this.image.next().name());
     }
 
     public ImagePresenter() {
@@ -33,13 +35,24 @@ public class ImagePresenter implements Presenter{
 
     private void onReleased(int offset){
         if (Math.abs(offset) > imageDisplay.width()/3) {
-            this.image = offset > 0 ? image.next() : image.prev();
+            this.image = offset < 0 ? image.next() : image.prev();
+            this.prevImage = getBufferedImage(this.image.prev().name());
+            this.nextImage = getBufferedImage(this.image.next().name());
         }
+        this.imageDisplay.setX(0);
         this.refresh();
     }
 
-    private void onDragged(int offset){
-        return;
+    private void onDragged(int offset) {
+        this.imageDisplay.clear();
+        this.imageDisplay.paintImage(getBufferedImage(image.name()), offset);
+        if (offset == 0) return;
+        if (offset > 0) {
+            this.imageDisplay.paintImage(prevImage, offset - this.imageDisplay.width());
+        }
+        else{
+            this.imageDisplay.paintImage(nextImage, offset + this.imageDisplay.width());
+        }
     }
 
     @Override
@@ -60,7 +73,7 @@ public class ImagePresenter implements Presenter{
 
     private void refresh() {
         this.imageDisplay.clear();
-        this.imageDisplay.paintImage(getBufferedImage(this.image.name()));
+        this.imageDisplay.paintImage(getBufferedImage(this.image.name()), 0);
     }
 
 }

@@ -4,7 +4,7 @@ package view;
 
 public interface ImageDisplay<T> {
     //void show(T image);
-    void paintImage(T image);
+    void paintImage(T image, int x);
 
     void onReleased(Offset offset);
 
@@ -18,4 +18,6 @@ public interface ImageDisplay<T> {
 
     public int width();
     public int height();
+
+    public void setX(int x);
 }

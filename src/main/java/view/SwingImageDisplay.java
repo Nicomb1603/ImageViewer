@@ -14,7 +14,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
 
 
     private int x = 0;
-    private int previousX;
+    private int startX;
     private List<Order> orders;
     private Offset onDragged = Offset::Null;
     private Offset onReleased = Offset::Null;
@@ -31,13 +31,15 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
 
             @Override
             public void mousePressed(MouseEvent e) {
-                previousX = e.getX();
+                startX = e.getX();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                onReleased.handle(x);
+                int offset = e.getX() - startX;
+                onReleased.handle(offset);
             }
+
 
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -53,12 +55,8 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                int currentX = e.getX();
-                int deltaX = currentX - previousX;
-                x += deltaX;
-                System.out.println(x);
-                previousX = currentX;
-                repaint();
+                int offset = e.getX() - startX;
+                onDragged.handle(offset);
             }
 
             @Override
@@ -67,22 +65,29 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
         });
     }
 
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public static class Order{
         BufferedImage image;
+        int x;
 
-        public Order(BufferedImage image){
+        public Order(BufferedImage image, int x){
             this.image = image;
+            this.x = x;
         }
 
-        public static Order create(BufferedImage image){
-            return new Order(image);
+        public static Order create(BufferedImage image, int x){
+            return new Order(image, x);
         }
 
     }
 
     @Override
-    public void paintImage(BufferedImage image){
-        this.orders.add(Order.create(image));
+    public void paintImage(BufferedImage image, int x){
+        this.orders.add(Order.create(image, x));
         this.repaint();
     }
 
@@ -96,7 +101,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
             BufferedImage image = null;
             try {
                 image = resize(order.image);
-                g.drawImage(image, x, 0, null);
+                g.drawImage(image, order.x, 0, null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
