@@ -39,7 +39,6 @@ public class ImagePresenter implements Presenter{
             this.prevImage = getBufferedImage(this.image.prev().name());
             this.nextImage = getBufferedImage(this.image.next().name());
         }
-        this.imageDisplay.setX(0);
         this.refresh();
     }
 

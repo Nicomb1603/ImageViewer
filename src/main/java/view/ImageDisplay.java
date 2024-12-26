@@ -19,5 +19,5 @@ public interface ImageDisplay<T> {
     public int width();
     public int height();
 
-    public void setX(int x);
+
 }

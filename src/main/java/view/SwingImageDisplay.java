@@ -65,10 +65,6 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
         });
     }
 
-    @Override
-    public void setX(int x) {
-        this.x = x;
-    }
 
     public static class Order{
         BufferedImage image;
