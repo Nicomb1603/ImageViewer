@@ -28,7 +28,6 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
-
         this.add((SwingImageDisplay) presenter.imageDisplay());
         this.add(previousButton, BorderLayout.WEST);
         this.add(nextButton, BorderLayout.EAST);
@@ -42,7 +41,7 @@ public class MainFrame extends JFrame {
     }
 
     private ImagePresenter createPresenter() {
-        return new ImagePresenter(this.screenSize);
+        return new ImagePresenter();
     }
 
     private void createButtons(){

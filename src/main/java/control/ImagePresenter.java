@@ -19,11 +19,11 @@ public class ImagePresenter implements Presenter{
     @Override
     public void show(Image image) {
         this.image = image;
-        this.imageDisplay.show(getBufferedImage(image.name()));
+        this.imageDisplay.paintImage(getBufferedImage(image.name()));
     }
 
-    public ImagePresenter(Dimension dimension) {
-        this.imageDisplay = new SwingImageDisplay(dimension);
+    public ImagePresenter() {
+        this.imageDisplay = new SwingImageDisplay();
     }
 
     @Override
