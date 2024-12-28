@@ -73,7 +73,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
         BufferedImage image;
         int x;
 
-        public Order(BufferedImage image, int x){
+        private Order(BufferedImage image, int x){
             this.image = image;
             this.x = x;
         }
@@ -131,7 +131,7 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
     }
 
     private BufferedImage resize(BufferedImage image) throws IOException {
-        BufferedImage resizedBufferedImage = new BufferedImage(this.getWidth(), this.getWidth(), image.getType());
+        BufferedImage resizedBufferedImage = new BufferedImage(this.getWidth(), this.getHeight(), image.getType());
         Graphics2D g2d = resizedBufferedImage.createGraphics();
         g2d.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), null);
         g2d.dispose();

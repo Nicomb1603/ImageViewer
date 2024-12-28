@@ -4,8 +4,13 @@ package control;
 public class PreviousImageCommand implements Command{
     Presenter presenter;
 
-    public PreviousImageCommand(Presenter presenter) {
+    private PreviousImageCommand(Presenter presenter) {
         this.presenter = presenter;
+    }
+
+
+    public static Command createCommand(Presenter presenter) {
+        return new PreviousImageCommand(presenter);
     }
 
     @Override

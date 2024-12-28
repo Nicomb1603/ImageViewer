@@ -18,7 +18,11 @@ public class MainFrame extends JFrame {
     private JButton nextButton;
     private JButton previousButton;
 
-    public MainFrame() {
+    public static MainFrame createMainframe(){
+        return new MainFrame();
+    }
+
+    private MainFrame() {
 
         initialize();
 

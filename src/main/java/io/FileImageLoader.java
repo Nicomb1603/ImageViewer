@@ -9,8 +9,12 @@ import java.util.Set;
 public class FileImageLoader implements ImageLoader{
     private final File[] files;
 
-    public FileImageLoader(File folder) {
+    private FileImageLoader(File folder) {
         this.files = folder.listFiles(isImage());
+    }
+
+    public static FileImageLoader createFileImageLoader(File folder){
+        return new FileImageLoader(folder);
     }
 
     private static final Set<String> imageExtensions = Set.of(".jpg", ".png");

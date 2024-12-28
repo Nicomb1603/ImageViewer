@@ -8,11 +8,11 @@ import java.io.File;
 public class Main {
     public static final String root = "Pictures";
     public static void main(String[] args) {
-        MainFrame frame = new MainFrame();
-        Image image = new FileImageLoader(new File(root)).load();
+        MainFrame frame = MainFrame.createMainframe();
+        Image image = FileImageLoader.createFileImageLoader(new File(root)).load();
         frame.presenter().show(image);
-        frame.add("<", new PreviousImageCommand(frame.presenter()))
-                .add(">", new NextImageCommand(frame.presenter()))
+        frame.add("<", PreviousImageCommand.createCommand(frame.presenter()))
+                .add(">", NextImageCommand.createCommand(frame.presenter()))
                 .setVisible(true);
 
     }
