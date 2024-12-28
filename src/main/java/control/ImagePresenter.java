@@ -5,7 +5,6 @@ import view.ImageDisplay;
 import view.SwingImageDisplay;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +14,8 @@ public class ImagePresenter implements Presenter{
     private Image image;
     private BufferedImage nextImage;
     private BufferedImage prevImage;
-    private ImageDisplay imageDisplay;
+    private final ImageDisplay imageDisplay;
+
 
 
     @Override
@@ -34,12 +34,13 @@ public class ImagePresenter implements Presenter{
     }
 
     private void onReleased(int offset){
-        if (Math.abs(offset) > imageDisplay.width()/3) {
+        if (Math.abs(offset) > imageDisplay.width()/2) {
             this.image = offset < 0 ? image.next() : image.prev();
+            this.refresh();
             this.prevImage = getBufferedImage(this.image.prev().name());
             this.nextImage = getBufferedImage(this.image.next().name());
         }
-        this.refresh();
+        else{this.refresh();}
     }
 
     private void onDragged(int offset) {

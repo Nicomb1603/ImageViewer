@@ -13,15 +13,14 @@ import java.util.List;
 public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedImage> {
 
 
-    private int x = 0;
     private int startX;
-    private List<Order> orders;
+    private final List<Order> orders;
     private Offset onDragged = Offset::Null;
     private Offset onReleased = Offset::Null;
 
 
     public SwingImageDisplay(){
-        this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        this.setSize(getScreenSize());
         this.orders = new ArrayList<>();
         this.addMouseListener(new MouseListener() {
             @Override
@@ -65,6 +64,10 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
         });
     }
 
+    private static Dimension getScreenSize() {
+        return Toolkit.getDefaultToolkit().getScreenSize();
+    }
+
 
     public static class Order{
         BufferedImage image;
@@ -83,8 +86,13 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
 
     @Override
     public void paintImage(BufferedImage image, int x){
-        this.orders.add(Order.create(image, x));
-        this.repaint();
+        try {
+            image = resize(image);
+            this.orders.add(Order.create(image, x));
+            this.repaint();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -94,13 +102,8 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
         for(Order order : orders){
-            BufferedImage image = null;
-            try {
-                image = resize(order.image);
-                g.drawImage(image, order.x, 0, null);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            g.drawImage(order.image, order.x, 0, null);
+
         }
 
     }
@@ -110,10 +113,6 @@ public class SwingImageDisplay extends JPanel implements ImageDisplay<BufferedIm
         return this.getWidth();
     }
 
-    @Override
-    public int height() {
-        return this.getHeight();
-    }
 
     @Override
     public void clear() {

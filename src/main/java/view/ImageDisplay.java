@@ -10,14 +10,13 @@ public interface ImageDisplay<T> {
 
     void onDragged(Offset offset);
 
-    public interface Offset {
+  interface Offset {
         static void Null(int offset) {}
         void handle(int offset);
     }
-    public void clear();
+    void clear();
 
-    public int width();
-    public int height();
+    int width();
 
 
 }

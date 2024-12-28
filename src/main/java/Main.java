@@ -1,4 +1,4 @@
-import control.FileImageLoader;
+import io.FileImageLoader;
 import control.NextImageCommand;
 import control.PreviousImageCommand;
 import model.Image;
@@ -6,7 +6,7 @@ import model.Image;
 import java.io.File;
 
 public class Main {
-    public static final String root = "C:/Users/Usuario/Documents/Pictures";
+    public static final String root = "Pictures";
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
         Image image = new FileImageLoader(new File(root)).load();
