@@ -77,6 +77,7 @@ public class ImagePresenter implements Presenter{
         if (imageCache.containsKey(name)) {
             return imageCache.get(name);
         }
+
         try {
             BufferedImage image = ImageIO.read(new File(name));
             imageCache.put(name, image);
@@ -84,6 +85,7 @@ public class ImagePresenter implements Presenter{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     private void refresh() {
